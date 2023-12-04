@@ -1,0 +1,1 @@
+java -jar game2048.jar
