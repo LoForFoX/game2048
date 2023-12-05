@@ -1,15 +1,13 @@
 package test;
 
-import javasrc.*;
+import game.*;
 import java.util.List;
 import static java.util.Arrays.asList;
 
-public class HelperTest
-{
+public class HelperTest{
     private final static GameHelper helper = new GameHelper();
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args){
         assertEquals(helper.moveAndMergeEqual(asList(1,   2,   null,3)),    asList(1,   2,   3,   null));
         assertEquals(helper.moveAndMergeEqual(asList(2,   2,   null,3)),    asList(4,   3,   null,null));
         assertEquals(helper.moveAndMergeEqual(asList(2,   2,   4,   4)),    asList(4,   8,   null,null));
@@ -22,10 +20,8 @@ public class HelperTest
         System.out.println("HelperTest усепшно завершен");
     }
 
-    public static void assertEquals(List list1, List list2)
-    {
-        if(!list1.equals(list2))
-        {
+    public static void assertEquals(List list1, List list2){
+        if(!list1.equals(list2)){
             throw new RuntimeException("List1:"+list1+" не совпадает с List2: "+list2);
         }
     }

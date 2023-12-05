@@ -1,15 +1,13 @@
 package test;
 
-import javasrc.*;
+import game.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-public class Test2048
-{
-    public static void main(String[] args)
-    {
+public class Test2048{
+    public static void main(String[] args){
         Test2048 test = new Test2048();
         int size=4;
         Board board = new SquareBoard(size);
@@ -23,34 +21,30 @@ public class Test2048
         board.fillBoard(list);
         test.printBoard(board, size);
         System.out.println("\nПроверка move");
-        for(int k=0; k<4; k++)
-        {
+        for(int k=0; k<4; k++){
             List<Integer> listEtalon = new ArrayList<Integer>();
             Direction directionCheck = null;
-            if(k==0)
-            {
+            if(k==0){
                 directionCheck=Direction.UP;
                 listEtalon = listUP;
             }
-            if(k==1)
-            {
+            if(k==1){
                 directionCheck=Direction.DOWN;
                 listEtalon = listDOWN;
             }
-            if(k==2)
-            {
+            if(k==2){
                 directionCheck=Direction.RIGHT;
                 listEtalon = listRIGHT;
             }
-            if(k==3)
-            {
+            if(k==3){
                 directionCheck=Direction.LEFT;
                 listEtalon = listLEFT;
             }
+            test.printBoard(board, size);
+            System.out.println("Проверка : "+directionCheck.toString());
             game2048.move(directionCheck);
             List<Integer> tmp = new ArrayList<Integer>();
-            for(int i=0; i<size; i++)
-            {
+            for(int i=0; i<size; i++){
                 tmp.addAll(board.getValues(board.getRow(i)));
             }
             test.assertEquals(listEtalon, tmp);
@@ -59,50 +53,78 @@ public class Test2048
 
         int countNull=board.availableSpace().size();
         game2048.addItem();
-        if(countNull<=board.availableSpace().size())
-        {
+        if(countNull<=board.availableSpace().size()){
             throw new RuntimeException("addItem не работает");
         }
-        else
-        {
+        else{
             System.out.println("\nПроверка addItem - успешно");
         }
 
         List<Integer> fullList1=asList(8, 4, 2, 8, 4, 4, 2, 4, 2, 8, 4, 2, 4, 4, 8, 4),
                       fullList2=asList(8, 4, 2, 8, 4, 8, 4, 2, 2, 4, 8, 4, 4, 8, 2, 8);
         board.fillBoard(fullList1);
-        if(!game2048.canMove())
-        {
+        if(!game2048.canMove()){
             throw new RuntimeException("canMove не работает");
         }
-        else
-        {
+        else{
             board.fillBoard(fullList2);
-            if(game2048.canMove())
-            {
+            if(game2048.canMove()){
                 throw new RuntimeException("canMove не работает");
             }
-            else
-            {
+            else{
                 System.out.println("\nПроверка canMove - успешно");
             }
+        }
+
+        List<Integer> testlist=     asList(null, 8,    null, null,null, 2,    null, null,2,    2,    2,    8,   null, 2,    null, null),
+                      testlistUP=   asList(2,    8,    2,    8,   null, 4,    null, null,null, 2,    null, null,null, null, null, null),
+                      testlistDOWN= asList(null, null, null, null,null, 8,    null, null,null, 2,    null, null,2,    4,    2,    8),
+                      testlistRIGHT=asList(null, null, null, 8,   null, null, null, 2,   null, 2,    4,    8,   null, null, null, 2),
+                      testlistLEFT= asList(8,    null, null, null,2,    null, null, null,4,    2,    8,    null,2,    null, null, null);
+        System.out.println("\nПроверка move-merge");
+        for(int k=0; k<4; k++){
+            board.fillBoard(testlist);
+            List<Integer> listEtalon = new ArrayList<Integer>();
+            Direction directionCheck = null;
+            if(k==0){
+                directionCheck=Direction.UP;
+                listEtalon = testlistUP;
+            }
+            if(k==1){
+                directionCheck=Direction.DOWN;
+                listEtalon = testlistDOWN;
+            }
+            if(k==2){
+                directionCheck=Direction.RIGHT;
+                listEtalon = testlistRIGHT;
+            }
+            if(k==3){
+                directionCheck=Direction.LEFT;
+                listEtalon = testlistLEFT;
+            }
+            test.printBoard(board, size);
+            System.out.println("Проверка : "+directionCheck.toString());
+            game2048.move(directionCheck);
+            test.printBoard(board, size);
+            List<Integer> tmp = new ArrayList<Integer>();
+            for(int i=0; i<size; i++){
+                tmp.addAll(board.getValues(board.getRow(i)));
+            }
+            test.assertEquals(listEtalon, tmp);
+            System.out.println("Проверка : "+directionCheck.toString()+" - успешно");
         }
 
         System.out.println("\nЗавершено");
     }
 
-    private void printBoard(Board board, int size)
-    {
-        for (int i = 0; i < size; i++)
-        {
+    private void printBoard(Board board, int size){
+        for (int i = 0; i < size; i++){
             System.out.println(board.getValues(board.getRow(i)).toString().replace("null"," "));
         }
     }
 
-    private void assertEquals(List list1, List list2)
-    {
-        if(!list1.equals(list2))
-        {
+    private void assertEquals(List list1, List list2){
+        if(!list1.equals(list2)){
             throw new RuntimeException("List1:"+list1+" не совпадает с List2: "+list2);
         }
     }

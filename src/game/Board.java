@@ -1,21 +1,18 @@
-package javasrc;
+package game;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Board
-{
-    int weight,
-        height;
+public abstract class Board{
+    int width;
+    int height;
     Map<Key, Integer> board = new HashMap<>();
 
-    public Board(int w, int h)
-    {
-        weight=w;
-        height=h;
+    public Board(int width, int height) {
+        this.width =width;
+        this.height=height;
     }
-
     public abstract void fillBoard(List<Integer> list);
     public abstract List<Key> availableSpace();
     public abstract void addItem(Key key, Integer value);

@@ -5,35 +5,27 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomPanel extends JPanel
-{
+public class CustomPanel extends JPanel{
     private int size=100, count=4;
     private String values[][]= new String[count][count];
     private int typeMessage=0;
 
-    public CustomPanel()
-    {
-        for(int i=0; i<count; i++)
-        {
-            for(int j=0; j<count; j++)
-            {
+    public CustomPanel(){
+        for(int i=0; i<count; i++){
+            for(int j=0; j<count; j++){
                 values[i][j]="";
             }
         }
     }
 
     @Override
-    public void paintComponent(Graphics g)
-    {
+    public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         setBackground(new Color(230,230,230));
-        if(typeMessage==0)
-        {
-            for(int i=0; i<count; i++)
-            {
-                for(int j=0; j<count; j++)
-                {
+        if(typeMessage==0){
+            for(int i=0; i<count; i++){
+                for(int j=0; j<count; j++){
                     g2.setColor(Color.lightGray);
                     g2.fillRect(10*(1+i)+size*i,10*(j+1)+size*j,size,size);
                     g2.setColor(Color.white);
@@ -46,20 +38,16 @@ public class CustomPanel extends JPanel
                 }
             }
         }
-        else
-        {
+        else{
             g2.setFont(new Font("Times", Font.BOLD, 30));
             g2.setColor(Color.orange);
             String strMessage="";
-            switch (typeMessage)
-            {
-                case 1:
-                {
+            switch (typeMessage){
+                case 1:{
                     g2.setColor(Color.green);
                     strMessage="ПОБЕДА";
                 }break;
-                case 2:
-                {
+                case 2:{
                     g2.setColor(Color.red);
                     strMessage="ПОРАЖЕНИЕ";
                 }break;
@@ -74,17 +62,14 @@ public class CustomPanel extends JPanel
             g2.drawString(strMessage, 250-strMessage.length()*10, 300);
         }
     }
-    public void setValues(int row, List<Integer>listValues)
-    {
-        for(int i=0; i<listValues.size(); i++)
-        {
+    public void setValues(int row, List<Integer>listValues){
+        for(int i=0; i<listValues.size(); i++){
             String str=""+listValues.get(i);
             str=str.replace("null", "");
             values[i][row]=str;
         }
     }
-    public void setMessage(int type)
-    {
+    public void setMessage(int type){
         typeMessage=type;
     }
 
