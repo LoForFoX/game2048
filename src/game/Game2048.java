@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Random;
 
 public class Game2048 implements Game {
+    public static final int GAME_SIZE = 4;
+    private Board<Key, Integer> board = new SquareBoard<>(GAME_SIZE);
     private GameHelper helper = new GameHelper();
-    private Board board;
     private Random random = new Random();
-    public Game2048(Board newBoard) {
-        board = newBoard;
+    public Game2048(Board<Key, Integer> newBoard) {
+        this.board = newBoard;
     }
 
 
@@ -20,6 +21,7 @@ public class Game2048 implements Game {
             list.add(null);
         }
         board.fillBoard(list);
+        addItem();
         addItem();
     }
 
@@ -68,32 +70,10 @@ public class Game2048 implements Game {
             }
             if(direction==Direction.DOWN) {
                 for(int i = 0; i<board.width; i++) {
-                    List<Integer> tmpColumn=board.getValues(board.getColumn(i));
-                    for(int ri=0; ri<tmpColumn.size()/2; ri++){
-                        Integer t=tmpColumn.get(ri);
-                        tmpColumn.set(ri, tmpColumn.get(tmpColumn.size()-1-ri));
-                        tmpColumn.set(tmpColumn.size()-1-ri, t);
-                    }
-                    List<Integer> tmp=helper.moveAndMergeEqual(tmpColumn);
-                    for(int ri=0; ri<tmp.size()/2; ri++){
-                        Integer t=tmp.get(ri);
-                        tmp.set(ri, tmp.get(tmp.size()-1-ri));
-                        tmp.set(tmp.size()-1-ri, t);
-                    }
-                    int counterNULL=0;
-                    for(int ri=0; ri<tmp.size(); ri++){
-                        if(tmp.get(ri)==null){
-                            counterNULL++;
-                        }
-                    }
-                    if(counterNULL<tmp.size()){
-                        while (tmp.get(tmp.size()-1)==null){
-                            tmp.remove(tmp.size()-1);
-                            tmp.add(0,null);
-                        }
-                    }
-                    for(int j=0; j<tmp.size(); j++) {
-                        newValues.set(i+(tmp.size()*j), tmp.get(j));
+                    List<Integer> tmp=swapList(helper.moveAndMergeEqual(swapList(board.getValues(board.getColumn(i)))));
+                    List<Integer> swapTmp=swapNullList(tmp);
+                    for(int j=0; j<swapTmp.size(); j++) {
+                        newValues.set(i+(swapTmp.size()*j), swapTmp.get(j));
                     }
                 }
             }
@@ -106,31 +86,8 @@ public class Game2048 implements Game {
             }
             if(direction==Direction.RIGHT) {
                 for(int i=0; i<board.height; i++) {
-                    List<Integer> tmpRow=board.getValues(board.getRow(i));
-                    for(int ri=0; ri<tmpRow.size()/2; ri++){
-                        Integer t=tmpRow.get(ri);
-                        tmpRow.set(ri, tmpRow.get(tmpRow.size()-1-ri));
-                        tmpRow.set(tmpRow.size()-1-ri, t);
-                    }
-                    List<Integer> tmp=helper.moveAndMergeEqual(tmpRow);
-                    for(int ri=0; ri<tmp.size()/2; ri++){
-                        Integer t=tmp.get(ri);
-                        tmp.set(ri, tmp.get(tmp.size()-1-ri));
-                        tmp.set(tmp.size()-1-ri, t);
-                    }
-                    int counterNULL=0;
-                    for(int ri=0; ri<tmp.size(); ri++){
-                        if(tmp.get(ri)==null){
-                            counterNULL++;
-                        }
-                    }
-                    if(counterNULL<tmp.size()){
-                        while (tmp.get(tmp.size()-1)==null){
-                            tmp.remove(tmp.size()-1);
-                            tmp.add(0,null);
-                        }
-                    }
-                    newValues.addAll(tmp);
+                    List<Integer> tmp=swapList(helper.moveAndMergeEqual(swapList(board.getValues(board.getRow(i)))));
+                    newValues.addAll(swapNullList(tmp));
                 }
             }
         }
@@ -138,13 +95,38 @@ public class Game2048 implements Game {
         return !newValues.equals(oldValues);
     }
 
+    private List<Integer> swapList(List<Integer> list){
+        for(int ri=0; ri<list.size()/2; ri++){
+            Integer t=list.get(ri);
+            list.set(ri, list.get(list.size()-1-ri));
+            list.set(list.size()-1-ri, t);
+        }
+        return list;
+    }
+    private List<Integer> swapNullList(List<Integer> list){
+        int counterNULL=0;
+        for (Integer itemList : list) {
+            if (itemList == null) {
+                counterNULL++;
+            }
+        }
+        if(counterNULL<list.size()){
+            while (list.get(list.size()-1)==null){
+                list.remove(list.size()-1);
+                list.add(0,null);
+            }
+        }
+        return list;
+    }
+
+
     @Override
     public void addItem() {
         List<Key> keyList=board.availableSpace();
         if(!keyList.isEmpty()) {
             int a=random.nextInt(keyList.size());
             if((a>=0)&&(a<keyList.size())) {
-                board.addItem(keyList.get(a), 2);
+                board.addItem(keyList.get(a), (random.nextFloat()>0.9)?(4):(2));
             }
         }
     }

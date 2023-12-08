@@ -3,13 +3,13 @@ package game;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SquareBoard extends Board{
+public class SquareBoard<V> extends Board<Key, V>{
     public SquareBoard(int size) {
         super(size, size);
     }
 
     @Override
-    public void fillBoard(List<Integer> list) {
+    public void fillBoard(List<V> list) {
         board.clear();
         int currentItem=0;
         for(int row=0; row<height; row++) {
@@ -28,7 +28,7 @@ public class SquareBoard extends Board{
 
     @Override
     public List<Key> availableSpace() {
-        List<Key> nullList = new ArrayList<Key>();
+        List<Key> nullList = new ArrayList<>();
         for(Key k: board.keySet()) {
             if(board.get(k)==null) {
                 nullList.add(k);
@@ -38,7 +38,7 @@ public class SquareBoard extends Board{
     }
 
     @Override
-    public void addItem(Key key, Integer value) {
+    public void addItem(Key key, V value) {
         board.put(key, value);
     }
 
@@ -53,7 +53,7 @@ public class SquareBoard extends Board{
     }
 
     @Override
-    public Integer getValue(Key k) {
+    public V getValue(Key k) {
         return board.get(k);
     }
 
@@ -98,13 +98,13 @@ public class SquareBoard extends Board{
     }
 
     @Override
-    public boolean hasValue(Integer value) {
+    public boolean hasValue(V value) {
         return board.containsValue(value);
     }
 
     @Override
-    public List<Integer> getValues(List<Key> keys) {
-        List<Integer> listValue = new ArrayList<Integer>();
+    public List<V> getValues(List<Key> keys) {
+        List<V> listValue = new ArrayList<>();
         for (Key currentKey : keys) {
             if (board.containsKey(currentKey)) {
                 listValue.add(board.get(currentKey));

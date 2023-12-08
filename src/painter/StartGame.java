@@ -7,8 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class StartGame {
-    private CustomPanel panel = new CustomPanel();
     private int size=4;
+    private CustomPanel panel = new CustomPanel(size);
     private Board board = new SquareBoard(size);
     private Game game2048 = new Game2048(board);
     private boolean stopGame=false;

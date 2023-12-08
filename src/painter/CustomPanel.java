@@ -7,10 +7,13 @@ import java.util.List;
 
 public class CustomPanel extends JPanel{
     private int size=100, count=4;
-    private String values[][]= new String[count][count];
+    private String values[][];
     private int typeMessage=0;
 
-    public CustomPanel(){
+    public CustomPanel(int countElement){
+        count=countElement;
+        size=(400-10*(count-1))/countElement;
+        values = new String[count][count];
         for(int i=0; i<count; i++){
             for(int j=0; j<count; j++){
                 values[i][j]="";
@@ -32,9 +35,8 @@ public class CustomPanel extends JPanel{
                     g2.fillRect(10*(1+i)+size*i+1,10*(j+1)+size*j+1,size-2,size-2);
 
                     g2.setColor(Color.black);
-                    g2.setFont(new Font("Times", Font.BOLD, 40));
-
-                    g2.drawString(values[i][j], 10*(1+i)+size*i+50-values[i][j].length()*10,10*(j+1)+size*j+60);
+                    g2.setFont(new Font("Times", Font.BOLD, size/2));
+                    g2.drawString(values[i][j], 10*(1+i)+size*i+40-values[i][j].length()*10,10*(j+1)+size*j+60);
                 }
             }
         }
