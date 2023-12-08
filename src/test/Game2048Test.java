@@ -34,14 +34,14 @@ public class Game2048Test {
             throw new RuntimeException("Game board must be empty before initialize");
         }
         b.fillBoard(asList(2,null,null,8, 2,2,8,8, 2,null,2,2, 4,2,4,2048));
+        if (!game.hasWin()) {
+            throw new RuntimeException("hasWin not work =(");
+        }
         //2 0 0 8                 2  8 0 0
         //2 2 8 8   сдвиг влево-> 4 16 0 0
         //2 0 2 2                 4  2 0 0
         //4 2 4 2048              4  2 4 2048
         //                        6 пустых
-        if (!game.hasWin()) {
-            throw new RuntimeException("hasWin not work =(");
-        }
         game.move(Direction.LEFT);
         if (b.availableSpace().size() != 6) {
             throw new RuntimeException("move must be add item");
